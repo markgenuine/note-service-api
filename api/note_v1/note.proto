@@ -1,15 +1,17 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package api.note_v1;
 
 option go_package = "github.com/markgenuine/note-service-api/pkg/note_v1";
 
 service NoteService {
-  rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse);
-  rpc GetNote(GetNoteRequest) returns (GetNoteResponse);
-  rpc GetListNote(GetListNoteRequest) returns (GetListNoteResponse);
-  rpc UpdateNote(UpdateNoteRequest) returns (UpdateNoteResponse);
-  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc GetList(GetListRequest) returns (GetListResponse);
+  rpc Update(UpdateRequest) returns (google.protobuf.Empty);
+  rpc Delete(DeleteRequest) returns (google.protobuf.Empty);
 }
 
 message NoteParams {
@@ -18,45 +20,36 @@ message NoteParams {
   string author = 3;
 }
 
-message CreateNoteRequest {
+message CreateRequest {
     NoteParams note = 1;
 }
 
-message CreateNoteResponse {
+message CreateResponse {
   int64 id = 1;
 }
 
-message GetNoteRequest {
+message GetRequest {
  int64 id = 1;
 }
 
-message GetNoteResponse {
+message GetResponse {
   int64 id = 1;
   NoteParams note = 2;
 }
 
-message GetListNoteRequest {
+message GetListRequest {
   int64 limit = 1;
+  int64 offset = 2;
 }
 
-message GetListNoteResponse {
+message GetListResponse {
   repeated NoteParams notes = 1;
 }
 
-message UpdateNoteRequest {
+message UpdateRequest {
   int64 id = 1;
 }
 
-message UpdateNoteResponse {
+message DeleteRequest {
   int64 id = 1;
-  bool status = 2;
-}
-
-message DeleteNoteRequest {
-  int64 id = 1;
-}
-
-message DeleteNoteResponse {
-  int64 id = 1;
-  bool status = 2;
 }

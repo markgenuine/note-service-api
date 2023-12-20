@@ -5,13 +5,11 @@ import (
 	"fmt"
 
 	desc "github.com/markgenuine/note-service-api/pkg/note_v1"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *Note) UpdateNote(ctx context.Context, req *desc.UpdateNoteRequest) (*desc.UpdateNoteResponse, error) {
+func (s *Note) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb.Empty, error) {
 	fmt.Println("Update Note id: ", req.GetId())
 
-	return &desc.UpdateNoteResponse{
-		Id:     req.GetId(),
-		Status: true,
-	}, nil
+	return &emptypb.Empty{}, nil
 }

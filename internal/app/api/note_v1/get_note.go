@@ -7,15 +7,15 @@ import (
 	desc "github.com/markgenuine/note-service-api/pkg/note_v1"
 )
 
-func (s *Note) GetNote(ctx context.Context, req *desc.GetNoteRequest) (*desc.GetNoteResponse, error) {
+func (s *Note) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetResponse, error) {
 	fmt.Println("Get Note")
 	fmt.Println("Note id: ", req.GetId())
 
-	nP := &desc.NoteParams{Title: "title1", Text: "text test text", Author: "Konstantin"}
-	fmt.Println("Note info: ", nP)
+	params := &desc.NoteParams{Title: "title1", Text: "text test text", Author: "Konstantin"}
+	fmt.Println("Note info: ", params)
 
-	return &desc.GetNoteResponse{
+	return &desc.GetResponse{
 		Id:   req.GetId(),
-		Note: nP,
+		Note: params,
 	}, nil
 }

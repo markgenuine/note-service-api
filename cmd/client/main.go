@@ -20,7 +20,7 @@ func main() {
 	client := desc.NewNoteServiceClient(connect)
 
 	// call method CreateNote
-	res1, err := client.CreateNote(context.Background(), &desc.CreateNoteRequest{Note: &desc.NoteParams{
+	createNote, err := client.Create(context.Background(), &desc.CreateRequest{Note: &desc.NoteParams{
 		Title:  "Title",
 		Text:   "Text",
 		Author: "Konstantin",
@@ -30,42 +30,37 @@ func main() {
 		log.Println("Call method CreateNote: ", err.Error())
 	}
 
-	log.Println("Create note: ", res1.Id)
+	log.Println("Create note: ", createNote.Id)
 
 	// call method DeleteNote
-	res2, err := client.DeleteNote(context.Background(), &desc.DeleteNoteRequest{Id: 5})
+	_, err = client.Delete(context.Background(), &desc.DeleteRequest{})
 
 	if err != nil {
 		log.Println("Call method DeleteNote: ", err.Error())
 	}
 
-	log.Println("Delete note: ", res2.Id, " Delete: ", res2.Status)
-
 	// call method GetListNote
-	res3, err := client.GetListNote(context.Background(), &desc.GetListNoteRequest{Limit: 10})
+	listNote, err := client.GetList(context.Background(), &desc.GetListRequest{Limit: 10, Offset: 2})
 
 	if err != nil {
 		log.Println("Call method GetListNote: ", err.Error())
 	}
 
-	log.Println("List Note: ", res3.Notes)
+	log.Println("List Note: ", listNote.Notes)
 
 	// call method GetNote
-	res4, err := client.GetNote(context.Background(), &desc.GetNoteRequest{Id: 2})
+	note, err := client.Get(context.Background(), &desc.GetRequest{Id: 2})
 
 	if err != nil {
 		log.Println("Call method GetNote: ", err.Error())
 	}
 
-	log.Println("Note id: ", res4.Id, "Note info: ", res4.Note)
+	log.Println("Note id: ", note.Id, "Note info: ", note.Note)
 
 	// call method UpdateNote
-	res5, err := client.UpdateNote(context.Background(), &desc.UpdateNoteRequest{Id: 23})
+	_, err = client.Update(context.Background(), &desc.UpdateRequest{})
 
 	if err != nil {
 		log.Println("Call method UpdateNote: ", err.Error())
 	}
-
-	log.Println("Note id: ", res5.Id, "Update: ", res5.Status)
-
 }
