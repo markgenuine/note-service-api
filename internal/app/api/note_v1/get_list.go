@@ -3,16 +3,42 @@ package note_v1
 import (
 	"context"
 	"fmt"
+	"log"
 
+	sq "github.com/Masterminds/squirrel"
+	"github.com/jmoiron/sqlx"
 	desc "github.com/markgenuine/note-service-api/pkg/note_v1"
 )
 
 func (s *Note) GetList(ctx context.Context, req *desc.GetListRequest) (*desc.GetListResponse, error) {
 	fmt.Println("Get List Note, limit: ", req.GetLimit(), " , offset: ", req.GetOffset())
-	params := []*desc.NoteParams{
-		&desc.NoteParams{Title: "Title1", Text: "Text1", Author: "konstantin"},
-		&desc.NoteParams{Title: "Title2", Text: "Text2", Author: "konstantin"},
+
+	db, err := sqlx.Open("pgx", getDbDSN())
+	if err != nil {
+		return nil, err
 	}
-	fmt.Println("Note params: ", params)
-	return &desc.GetListResponse{Notes: params}, nil
+	defer db.Close()
+
+	query, args, err := sq.Select("title, text, author").
+		From(noteTable).
+		OrderBy("id").
+		ToSql()
+
+	if err != nil {
+		return nil, err
+	}
+
+	notes := []*desc.NoteParams{}
+
+	rows, err := db.QueryxContext(ctx, query, args...)
+	for rows.Next() {
+		note := &desc.NoteParams{}
+		err := rows.StructScan(note)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		notes = append(notes, note)
+	}
+
+	return &desc.GetListResponse{Notes: notes}, nil
 }
