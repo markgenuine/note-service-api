@@ -48,6 +48,7 @@ message GetListResponse {
 
 message UpdateRequest {
   int64 id = 1;
+  NoteParams note = 2;
 }
 
 message DeleteRequest {

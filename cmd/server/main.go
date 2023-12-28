@@ -19,7 +19,6 @@ func main() {
 
 	s := grpc.NewServer()
 	desc.RegisterNoteServiceServer(s, note_v1.NewNote())
-
 	if err = s.Serve(list); err != nil {
 		log.Fatalf("failed to serve: %s", err.Error())
 	}
