@@ -19,9 +19,9 @@ func (s *Note) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetResponse
 	}
 	defer db.Close()
 
-	query, args, err := sq.Select("title, text, author").
+	query, args, err := sq.Select(titleColumn, textColumn, authorColumn).
 		From(noteTable).
-		Where(sq.Eq{"id": req.GetId()}).
+		Where(sq.Eq{idColumn: req.GetId()}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
 	if err != nil {

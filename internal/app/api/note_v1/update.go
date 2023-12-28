@@ -21,14 +21,13 @@ func (s *Note) Update(ctx context.Context, req *desc.UpdateRequest) (*emptypb.Em
 	defer db.Close()
 
 	query, args, err := sq.Update(noteTable).
-		Set("title", req.Note.GetTitle()).
-		Set("text", req.Note.GetText()).
-		Set("author", req.Note.GetAuthor()).
-		Set("updated_at", time.Now()).
-		Where(sq.Eq{"id": req.Id}).
+		Set(titleColumn, req.Note.GetTitle()).
+		Set(textColumn, req.Note.GetText()).
+		Set(authorColumn, req.Note.GetAuthor()).
+		Set(updatedAtColumn, time.Now()).
+		Where(sq.Eq{idColumn: req.Id}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return nil, err
 	}

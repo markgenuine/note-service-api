@@ -14,6 +14,13 @@ const (
 	dbPassword = "service-password"
 	dbName     = "service-db"
 	sslMode    = "disable"
+
+	// columns
+	idColumn        = "id"
+	titleColumn     = "title"
+	textColumn      = "text"
+	authorColumn    = "author"
+	updatedAtColumn = "updated_at"
 )
 
 type Note struct {

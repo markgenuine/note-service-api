@@ -19,15 +19,13 @@ func (s *Note) Delete(ctx context.Context, req *desc.DeleteRequest) (*emptypb.Em
 
 	query, args, err := sq.Delete(noteTable).
 		PlaceholderFormat(sq.Dollar).
-		Where(sq.Eq{"id": req.GetId()}).
+		Where(sq.Eq{idColumn: req.GetId()}).
 		ToSql()
-
 	if err != nil {
 		return nil, err
 	}
 
 	_, err = db.ExecContext(ctx, query, args...)
-
 	if err != nil {
 		return nil, err
 	}

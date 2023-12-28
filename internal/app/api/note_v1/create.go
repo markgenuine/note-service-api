@@ -22,11 +22,10 @@ func (s *Note) Create(ctx context.Context, req *desc.CreateRequest) (*desc.Creat
 
 	query, args, err := sq.Insert(noteTable).
 		PlaceholderFormat(sq.Dollar).
-		Columns("title, text, author").
+		Columns(titleColumn, textColumn, authorColumn).
 		Values(req.GetNote().Title, req.GetNote().Text, req.GetNote().Author).
-		Suffix("returning id").
+		Suffix(fmt.Sprintf("returning %s", idColumn)).
 		ToSql()
-
 	if err != nil {
 		return nil, err
 	}

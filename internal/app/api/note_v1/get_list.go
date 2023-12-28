@@ -19,11 +19,10 @@ func (s *Note) GetList(ctx context.Context, req *desc.GetListRequest) (*desc.Get
 	}
 	defer db.Close()
 
-	query, args, err := sq.Select("title, text, author").
+	query, args, err := sq.Select(titleColumn, textColumn, authorColumn).
 		From(noteTable).
-		OrderBy("id").
+		OrderBy(idColumn).
 		ToSql()
-
 	if err != nil {
 		return nil, err
 	}
